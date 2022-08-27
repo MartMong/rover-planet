@@ -1,15 +1,17 @@
 package main
 
-import "github.com/MartMong/rover-planet/internal/domain/rover"
+import (
+	"os"
+	"strings"
+
+	"github.com/MartMong/rover-planet/internal/ports/cli"
+)
 
 func main() {
-	rover := rover.New(24)
-	rover.TurnRight()
-	rover.Forward()
-	rover.TurnLeft()
-	rover.Forward()
-	rover.TurnLeft()
-	rover.TurnLeft()
-	rover.Forward()
-	rover.TurnRight()
+	option := strings.Join(os.Args[1:], ",")
+	switch option {
+	case "-cli":
+		roverCli := cli.NewRoverCLI()
+		roverCli.Start()
+	}
 }
