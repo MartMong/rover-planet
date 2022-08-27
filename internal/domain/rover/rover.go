@@ -3,7 +3,8 @@ package rover
 import "fmt"
 
 type Interface interface {
-	Command(order string) string
+	Command(order string) (string, error)
+	GetState() string
 }
 
 type position struct {
@@ -25,7 +26,7 @@ func New(mapSize int) Interface {
 	}
 }
 
-func (r *Rover) Command(order string) string {
+func (r *Rover) Command(order string) (string, error) {
 	switch order {
 	case "F":
 		r.forward()
@@ -37,10 +38,10 @@ func (r *Rover) Command(order string) string {
 		r.turnRight()
 
 	default:
-		fmt.Printf("unsupport command: %s", order)
+		return r.GetState(), fmt.Errorf("unsupport command: %s", order)
 	}
 
-	return r.getState()
+	return r.GetState(), nil
 }
 
 func (r *Rover) turnLeft() {
@@ -57,7 +58,7 @@ func (r *Rover) forward() {
 
 func (r *Rover) step(step int) (state string) {
 	defer func() {
-		state = r.getState()
+		state = r.GetState()
 	}()
 
 	x := r.position.x
@@ -90,6 +91,6 @@ func (r *Rover) step(step int) (state string) {
 	return
 }
 
-func (r *Rover) getState() string {
+func (r *Rover) GetState() string {
 	return fmt.Sprintf("%s:%d,%d", getDirection(r.direction), r.position.x, r.position.y)
 }

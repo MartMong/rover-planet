@@ -10,8 +10,8 @@ import (
 )
 
 type RoverCLI struct {
-	scanner *bufio.Scanner
 	rover   rover.Interface
+	scanner *bufio.Scanner
 }
 
 func NewRoverCLI() *RoverCLI {
@@ -34,6 +34,7 @@ func (c *RoverCLI) Start() {
 		}
 
 		c.rover = rover.New(mapSize)
+		fmt.Println(c.rover.GetState())
 	}
 
 	for {
@@ -44,8 +45,14 @@ func (c *RoverCLI) Start() {
 
 		if text == "exit" {
 			os.Exit(0)
+			return
 		}
 
-		fmt.Println(c.rover.Command(text))
+		currentState, err := c.rover.Command(text)
+		if err != nil {
+			fmt.Printf("\terror: %s\n", err.Error())
+		}
+
+		fmt.Println(currentState)
 	}
 }
