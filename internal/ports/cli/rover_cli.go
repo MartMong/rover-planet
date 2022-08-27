@@ -6,11 +6,10 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/MartMong/rover-planet/internal/domain/rover"
+	roverDomain "github.com/MartMong/rover-planet/internal/domain/rover"
 )
 
 type RoverCLI struct {
-	rover   rover.Interface
 	scanner *bufio.Scanner
 }
 
@@ -22,8 +21,10 @@ func NewRoverCLI() *RoverCLI {
 }
 
 func (c *RoverCLI) Start() {
+	var rover roverDomain.Interface
+
 	fmt.Print("Please enter map size: ")
-	for c.rover == nil {
+	for rover == nil {
 		c.scanner.Scan()
 		text := c.scanner.Text()
 
@@ -33,8 +34,8 @@ func (c *RoverCLI) Start() {
 			continue
 		}
 
-		c.rover = rover.New(mapSize)
-		fmt.Println(c.rover.GetState())
+		rover = roverDomain.New(mapSize)
+		fmt.Println(rover.GetState())
 	}
 
 	for {
@@ -48,7 +49,7 @@ func (c *RoverCLI) Start() {
 			return
 		}
 
-		currentState, err := c.rover.Command(text)
+		currentState, err := rover.Command(text)
 		if err != nil {
 			fmt.Printf("\terror: %s\n", err.Error())
 		}
