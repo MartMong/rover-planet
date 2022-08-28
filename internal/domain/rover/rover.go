@@ -18,7 +18,7 @@ type Rover struct {
 	direction direction
 }
 
-func New(mapSize int) Interface {
+func New(mapSize int) *Rover {
 	return &Rover{
 		mapSize:   mapSize,
 		position:  &position{x: 0, y: 0},
@@ -29,7 +29,7 @@ func New(mapSize int) Interface {
 func (r *Rover) Command(order string) (string, error) {
 	switch order {
 	case "F":
-		r.forward()
+		r.step(1)
 
 	case "L":
 		r.turnLeft()
@@ -44,6 +44,10 @@ func (r *Rover) Command(order string) (string, error) {
 	return r.GetState(), nil
 }
 
+func (r *Rover) GetState() string {
+	return fmt.Sprintf("%s:%d,%d", getDirection(r.direction), r.position.x, r.position.y)
+}
+
 func (r *Rover) turnLeft() {
 	r.direction = (r.direction - 1 + 4) % 4
 }
@@ -52,15 +56,7 @@ func (r *Rover) turnRight() {
 	r.direction = (r.direction + 1 + 4) % 4
 }
 
-func (r *Rover) forward() {
-	r.step(1)
-}
-
-func (r *Rover) step(step int) (state string) {
-	defer func() {
-		state = r.GetState()
-	}()
-
+func (r *Rover) step(step int) {
 	x := r.position.x
 	y := r.position.y
 
@@ -78,19 +74,15 @@ func (r *Rover) step(step int) (state string) {
 		x = x - step
 	}
 
-	if x < 0 || x > r.mapSize {
+	if x < 0 || x >= r.mapSize {
 		return
 	}
 
-	if y < 0 || y > r.mapSize {
+	if y < 0 || y >= r.mapSize {
 		return
 	}
 
 	r.position.x = x
 	r.position.y = y
 	return
-}
-
-func (r *Rover) GetState() string {
-	return fmt.Sprintf("%s:%d,%d", getDirection(r.direction), r.position.x, r.position.y)
 }
