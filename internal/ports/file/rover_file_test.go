@@ -17,7 +17,7 @@ var (
 
 var _ = Describe("Ports: file", func() {
 	Describe("NewRoverFile", func() {
-		It("correct file", func() {
+		It("should return RoverFile", func() {
 			roverFile, err := NewRoverFile(fmt.Sprintf("%s/test.txt", projectRoot))
 			Expect(err).To(BeNil())
 			Expect(roverFile).To(BeAssignableToTypeOf(&RoverFile{}))
