@@ -22,7 +22,7 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run:
+        run: |
           go mod download
           go install ginkgo
 
