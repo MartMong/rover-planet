@@ -25,7 +25,8 @@ jobs:
         run: |
           export PATH=$HOME/go/bin:$(go env GOPATH)/bin:/go/bin:$PATH
           go mod download
-          go install github.com/onsi/ginkgo/v2/ginkgo
+          go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo
+          go get github.com/onsi/gomega/...
 
       - name: Test with the Go CLI
         run: ginkgo -r
