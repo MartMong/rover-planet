@@ -177,6 +177,106 @@ var _ = Describe("Domain: rover", func() {
 		})
 	})
 
+	Describe("turnHalfLeft", func() {
+		var (
+			rover = New(10)
+		)
+
+		When("current direction = N", func() {
+			BeforeEach(func() {
+				rover.direction = N
+			})
+
+			It("should change direction = NW", func() {
+				rover.turnHalfLeft()
+				Expect(rover.direction).To(Equal(NW))
+			})
+		})
+
+		When("current direction = E", func() {
+			BeforeEach(func() {
+				rover.direction = E
+			})
+
+			It("should change direction = NE", func() {
+				rover.turnHalfLeft()
+				Expect(rover.direction).To(Equal(NE))
+			})
+		})
+
+		When("current direction = S", func() {
+			BeforeEach(func() {
+				rover.direction = S
+			})
+
+			It("should change direction = SE", func() {
+				rover.turnHalfLeft()
+				Expect(rover.direction).To(Equal(SE))
+			})
+		})
+
+		When("current direction = W", func() {
+			BeforeEach(func() {
+				rover.direction = W
+			})
+
+			It("should change direction = SW", func() {
+				rover.turnHalfLeft()
+				Expect(rover.direction).To(Equal(SW))
+			})
+		})
+	})
+
+	Describe("turnHalfRight", func() {
+		var (
+			rover = New(10)
+		)
+
+		When("current direction = N", func() {
+			BeforeEach(func() {
+				rover.direction = N
+			})
+
+			It("should change direction = NE", func() {
+				rover.turnHalfRight()
+				Expect(rover.direction).To(Equal(NE))
+			})
+		})
+
+		When("current direction = E", func() {
+			BeforeEach(func() {
+				rover.direction = E
+			})
+
+			It("should change direction = SE", func() {
+				rover.turnHalfRight()
+				Expect(rover.direction).To(Equal(SE))
+			})
+		})
+
+		When("current direction = S", func() {
+			BeforeEach(func() {
+				rover.direction = S
+			})
+
+			It("should change direction = SW", func() {
+				rover.turnHalfRight()
+				Expect(rover.direction).To(Equal(SW))
+			})
+		})
+
+		When("current direction = W", func() {
+			BeforeEach(func() {
+				rover.direction = W
+			})
+
+			It("should change direction = NW", func() {
+				rover.turnHalfRight()
+				Expect(rover.direction).To(Equal(NW))
+			})
+		})
+	})
+
 	Describe("step", func() {
 		var (
 			rover *Rover
@@ -221,6 +321,21 @@ var _ = Describe("Domain: rover", func() {
 			})
 		})
 
+		When("current direction = NE", func() {
+			BeforeEach(func() {
+				rover = New(5)
+				rover.direction = NE
+			})
+
+			Describe("step = 1", func() {
+				It("should move position to {x: 1, y: 1} when current = {x: 0, y: 0}", func() {
+					rover.step(1)
+					Expect(rover.position.x).To(Equal(1))
+					Expect(rover.position.y).To(Equal(1))
+				})
+			})
+		})
+
 		When("current direction = E", func() {
 			BeforeEach(func() {
 				rover = New(5)
@@ -255,6 +370,23 @@ var _ = Describe("Domain: rover", func() {
 				It("should not move when current = {x: 0, y: 0}", func() {
 					rover.step(10)
 					Expect(rover.position.x).To(Equal(0))
+					Expect(rover.position.y).To(Equal(0))
+				})
+			})
+		})
+
+		When("current direction = SE", func() {
+			BeforeEach(func() {
+				rover = New(5)
+				rover.direction = SE
+			})
+
+			Describe("step = 1", func() {
+				It("should move position to {x: 1, y: 0} when current = {x: 0, y: 1}", func() {
+					rover.position = &position{x: 0, y: 1}
+
+					rover.step(1)
+					Expect(rover.position.x).To(Equal(1))
 					Expect(rover.position.y).To(Equal(0))
 				})
 			})
@@ -307,6 +439,23 @@ var _ = Describe("Domain: rover", func() {
 			})
 		})
 
+		When("current direction = SW", func() {
+			BeforeEach(func() {
+				rover = New(5)
+				rover.direction = SW
+			})
+
+			Describe("step = 1", func() {
+				It("should move position to {x: 0, y: 0} when current = {x: 1, y: 1}", func() {
+					rover.position = &position{x: 1, y: 1}
+
+					rover.step(1)
+					Expect(rover.position.x).To(Equal(0))
+					Expect(rover.position.y).To(Equal(0))
+				})
+			})
+		})
+
 		When("current direction = W", func() {
 			BeforeEach(func() {
 				rover = New(5)
@@ -350,6 +499,23 @@ var _ = Describe("Domain: rover", func() {
 					rover.step(10)
 					Expect(rover.position.x).To(Equal(0))
 					Expect(rover.position.y).To(Equal(0))
+				})
+			})
+		})
+
+		When("current direction = NW", func() {
+			BeforeEach(func() {
+				rover = New(5)
+				rover.direction = NW
+			})
+
+			Describe("step = 1", func() {
+				It("should move position to {x: 0, y: 1} when current = {x: 0, y: 1}", func() {
+					rover.position = &position{x: 0, y: 1}
+
+					rover.step(1)
+					Expect(rover.position.x).To(Equal(0))
+					Expect(rover.position.y).To(Equal(1))
 				})
 			})
 		})
