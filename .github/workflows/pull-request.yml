@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          go mod download
+          go get .
           go install ginkgo
 
       - name: Test with the Go CLI
