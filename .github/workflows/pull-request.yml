@@ -23,6 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          export PATH=$HOME/go/bin:$(go env GOPATH)/bin:/go/bin:$PATH
           go mod download
           go get github.com/onsi/ginkgo/ginkgo
 
