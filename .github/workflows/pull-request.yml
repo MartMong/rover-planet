@@ -22,9 +22,9 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: |
-        go mod download
-        go install ginkgo
+        run:
+          go mod download
+          go install ginkgo
 
       - name: Test with the Go CLI
         run: ginkgo -r
