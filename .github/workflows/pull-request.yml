@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
-          go install github.com/onsi/ginkgo/ginkgo
+          go install github.com/onsi/ginkgo/v2
 
       - name: Test with the Go CLI
         run: ginkgo -r
