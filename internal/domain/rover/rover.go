@@ -1,6 +1,9 @@
 package rover
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Interface interface {
 	Command(order string) (string, error)
@@ -37,6 +40,12 @@ func (r *Rover) Command(order string) (string, error) {
 	case "R":
 		r.turnRight()
 
+	case "HL":
+		r.turnHalfLeft()
+
+	case "HR":
+		r.turnHalfRight()
+
 	default:
 		return r.GetState(), fmt.Errorf("unsupport command: %s", order)
 	}
@@ -49,11 +58,19 @@ func (r *Rover) GetState() string {
 }
 
 func (r *Rover) turnLeft() {
-	r.direction = (r.direction - 1 + 4) % 4
+	r.direction = direction(math.Mod(float64(r.direction-1.0+4.0), 4.0))
 }
 
 func (r *Rover) turnRight() {
-	r.direction = (r.direction + 1 + 4) % 4
+	r.direction = direction(math.Mod(float64(r.direction+1.0+4.0), 4.0))
+}
+
+func (r *Rover) turnHalfLeft() {
+	r.direction = direction(math.Mod(float64(r.direction-0.5+4.0), 4.0))
+}
+
+func (r *Rover) turnHalfRight() {
+	r.direction = direction(math.Mod(float64(r.direction+0.5+4.0), 4.0))
 }
 
 func (r *Rover) step(step int) {
@@ -64,14 +81,30 @@ func (r *Rover) step(step int) {
 	case N:
 		y = y + step
 
+	case NE:
+		x = x + step
+		y = y + step
+
 	case E:
 		x = x + step
+
+	case SE:
+		x = x + step
+		y = y - step
 
 	case S:
 		y = y - step
 
+	case SW:
+		x = x - step
+		y = y - step
+
 	case W:
 		x = x - step
+
+	case NW:
+		x = x - step
+		y = y + step
 	}
 
 	if x < 0 || x >= r.mapSize {
