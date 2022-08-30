@@ -51,6 +51,23 @@ var _ = Describe("Domain: rover", func() {
 			})
 		})
 
+		Describe("order: F with step", func() {
+			It("should return N:0,2", func() {
+				state, err := rover.Command("F2")
+				Expect(err).To(BeNil())
+				Expect(state).To(Equal("N:0,2"))
+			})
+		})
+
+		Describe("order: B with step", func() {
+			It("should return N:0,0", func() {
+				rover.position = &position{x: 0, y: 2}
+				state, err := rover.Command("B2")
+				Expect(err).To(BeNil())
+				Expect(state).To(Equal("N:0,0"))
+			})
+		})
+
 		Describe("order: B", func() {
 			It("should return N:0,1", func() {
 				rover.position = &position{x: 0, y: 2}

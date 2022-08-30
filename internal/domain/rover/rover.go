@@ -3,6 +3,8 @@ package rover
 import (
 	"fmt"
 	"math"
+	"regexp"
+	"strconv"
 )
 
 type Interface interface {
@@ -30,23 +32,37 @@ func New(mapSize int) *Rover {
 }
 
 func (r *Rover) Command(order string) (string, error) {
-	switch order {
-	case "F":
+	switch {
+	case order == "F":
 		r.step(1)
 
-	case "B":
+	case regexp.MustCompile(`^F\d+`).MatchString(order):
+		step, err := strconv.Atoi(order[1:])
+		if err != nil {
+			return r.GetState(), fmt.Errorf("unsupport command: %s", order)
+		}
+		r.step(step)
+
+	case order == "B":
 		r.step(-1)
 
-	case "L":
+	case regexp.MustCompile(`^B\d+`).MatchString(order):
+		step, err := strconv.Atoi(order[1:])
+		if err != nil {
+			return r.GetState(), fmt.Errorf("unsupport command: %s", order)
+		}
+		r.step(-1 * step)
+
+	case order == "L":
 		r.turnLeft()
 
-	case "R":
+	case order == "R":
 		r.turnRight()
 
-	case "HL":
+	case order == "HL":
 		r.turnHalfLeft()
 
-	case "HR":
+	case order == "HR":
 		r.turnHalfRight()
 
 	default:
