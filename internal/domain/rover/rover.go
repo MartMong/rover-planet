@@ -34,6 +34,9 @@ func (r *Rover) Command(order string) (string, error) {
 	case "F":
 		r.step(1)
 
+	case "B":
+		r.step(-1)
+
 	case "L":
 		r.turnLeft()
 
